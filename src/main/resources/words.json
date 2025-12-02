@@ -1,0 +1,32 @@
+[
+  {
+    "fullWord": "góra",
+    "target": "ó",
+    "rule": "Wymienia się na 'gory' (ó -> o).",
+    "difficulty": 1
+  },
+  {
+    "fullWord": "stół",
+    "target": "ó",
+    "rule": "Wymienia się na 'stoły' (ó -> o).",
+    "difficulty": 1
+  },
+  {
+    "fullWord": "morze",
+    "target": "rz",
+    "rule": "Wymienia się na 'morski' (rz -> r).",
+    "difficulty": 1
+  },
+  {
+    "fullWord": "król",
+    "target": "ó",
+    "rule": "Wyjątek / 'ó' niewymienne.",
+    "difficulty": 2
+  },
+  {
+    "fullWord": "gżegżółka",
+    "target": "ż",
+    "rule": "Wyjątek po spółgłosce 'g'.",
+    "difficulty": 3
+  }
+]

@@ -20,22 +20,28 @@ public class MainApp extends Application {
     public static final int WINDOW_HEIGHT = 720;
 
     // --- STANY GRY ---
-    // WALKING: Gracz chodzi
-    // DIALOGUE: Wyświetla się okno zadania (blokada ruchu)
     private enum GameState { WALKING, DIALOGUE }
     private GameState gameState = GameState.WALKING;
 
+    // --- MAPA I POZYCJA ---
     private int currentMapX = 0;
-    private int currentMapY = 0;
+    private int currentMapY = 0; // Start na mapie (0,0) -> Mapa 1
 
+    // --- OBIEKTY GŁÓWNE ---
     private TileMap tileMap;
-    private List<GameObject> currentObjects = new ArrayList<>(); // Lista obiektów na obecnej mapie
+    private List<GameObject> currentObjects = new ArrayList<>();
+    private WordBank wordBank;
+    private TaskView taskView;
 
-    private boolean up, down, left, right, spacePressed; // Doszła spacja
-    private boolean spaceWasProcessed = false; // Żeby jedno wciśnięcie nie klikało 100 razy na sekundę
+    // --- STEROWANIE ---
+    private boolean up, down, left, right, spacePressed;
+    private boolean spaceWasProcessed = false;
 
-    // Obiekt z którym aktualnie gadamy
+    // --- LOGIKA ZADANIA ---
     private GameObject activeObject = null;
+    private Word currentWord;       // Aktualne słowo do rozwiązania
+    private String message = "";    // Komunikat (Brawo/Błąd)
+    private String typedAnswer = ""; // To co wpisał gracz (np. "rz")
 
     private int getCurrentMapNumber() {
         if (currentMapX == 0 && currentMapY == 0) return 1;
@@ -47,41 +53,84 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) {
+        // 1. Inicjalizacja Logiki
         Player player = new Player();
         player.setPosition(50, WINDOW_HEIGHT - 150);
 
+        wordBank = new WordBank();
+        taskView = new TaskView();
+
+        // 2. Inicjalizacja Mapy
         int cols = WINDOW_WIDTH / TileMap.TILE_SIZE;
         int rows = WINDOW_HEIGHT / TileMap.TILE_SIZE;
-
         tileMap = new TileMap(cols, rows);
+        refreshMapData(cols, rows); // Załaduj pierwszą mapę
 
-        // Ładujemy mapę i obiekty na start
-        refreshMapData(cols, rows);
-
+        // 3. Konfiguracja JavaFX
         Canvas canvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         Pane root = new Pane(canvas);
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
+        // --- NAPRAWA FOCUSU (WAŻNE DLA WPISYWANIA LITER) ---
+        root.setFocusTraversable(true);
+        root.setOnMouseClicked(e -> root.requestFocus()); // Kliknięcie przywraca sterowanie
+        root.requestFocus(); // Wymuś skupienie na starcie
+
+        // 4. OBSŁUGA KLAWIATURY - RUCH (STRZAŁKI)
         scene.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.W) up = true;
-            if (e.getCode() == KeyCode.S) down = true;
-            if (e.getCode() == KeyCode.A) left = true;
-            if (e.getCode() == KeyCode.D) right = true;
+            if (e.getCode() == KeyCode.UP) up = true;
+            if (e.getCode() == KeyCode.DOWN) down = true;
+            if (e.getCode() == KeyCode.LEFT) left = true;
+            if (e.getCode() == KeyCode.RIGHT) right = true;
             if (e.getCode() == KeyCode.SPACE) spacePressed = true;
         });
 
         scene.setOnKeyReleased(e -> {
-            if (e.getCode() == KeyCode.W) up = false;
-            if (e.getCode() == KeyCode.S) down = false;
-            if (e.getCode() == KeyCode.A) left = false;
-            if (e.getCode() == KeyCode.D) right = false;
+            if (e.getCode() == KeyCode.UP) up = false;
+            if (e.getCode() == KeyCode.DOWN) down = false;
+            if (e.getCode() == KeyCode.LEFT) left = false;
+            if (e.getCode() == KeyCode.RIGHT) right = false;
             if (e.getCode() == KeyCode.SPACE) {
                 spacePressed = false;
-                spaceWasProcessed = false; // Reset blokady spacji po puszczeniu klawisza
+                spaceWasProcessed = false;
             }
         });
 
+        // 5. OBSŁUGA KLAWIATURY - PISANIE (LITERY)
+        scene.setOnKeyTyped(e -> {
+            // Działa tylko w trybie dialogu
+            if (gameState == GameState.DIALOGUE && currentWord != null) {
+                String character = e.getCharacter();
+
+                // Ignoruj znaki sterujące (enter, tab, puste)
+                if (character.trim().isEmpty() || character.equals("\r") || character.equals("\n")) {
+                    return;
+                }
+
+                // Dodaj literę do bufora
+                typedAnswer += character;
+                System.out.println("DEBUG: Wpisano: " + typedAnswer);
+
+                // Sprawdź odpowiedź
+                if (currentWord.getTarget().startsWith(typedAnswer)) {
+                    // Pasuje do początku, sprawdzamy czy to całość
+                    if (currentWord.checkAnswer(typedAnswer)) {
+                        message = "BRAWO! Prawidłowa odpowiedź.";
+                        // Tu kiedyś dodasz: player.addXP(10);
+                    } else {
+                        // Pasuje, ale to jeszcze nie koniec (np. wpisano "r", a ma być "rz")
+                        message = "Wpisano: " + typedAnswer + "...";
+                    }
+                } else {
+                    // Błąd
+                    message = "BŁĄD! Reguła: " + currentWord.getRule();
+                    typedAnswer = ""; // Resetuj wpisywanie
+                }
+            }
+        });
+
+        // 6. GŁÓWNA PĘTLA GRY
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -97,53 +146,81 @@ public class MainApp extends Application {
     }
 
     private void updateGame(Player player) {
-        // 1. LOGIKA W TRAKCIE CHODZENIA
+        // --- STAN: CHODZENIE ---
         if (gameState == GameState.WALKING) {
             double oldX = player.getX();
             double oldY = player.getY();
 
             player.update(up, down, left, right);
 
-            // Kolizja z blokami
+            // Kolizje z blokami
             if (tileMap.isBlocked(player.getHitboxX(), player.getHitboxY(), player.getHitboxSize())) {
                 player.setPosition(oldX, oldY);
             }
 
-            // Obsługa zmiany map (kod z poprzedniego etapu)
             handleMapSwitching(player);
 
-            // INTERAKCJA POD SPACJĄ
+            // Interakcja (SPACJA) - wejście w zadanie
             if (spacePressed && !spaceWasProcessed) {
-                // Sprawdzamy czy stoimy obok jakiegoś obiektu
                 for (GameObject obj : currentObjects) {
                     if (obj.isPlayerClose(player)) {
-                        System.out.println("Interakcja z: " + obj.getName());
                         activeObject = obj;
-                        gameState = GameState.DIALOGUE; // Zmieniamy stan na dialog -> blokada ruchu
+                        gameState = GameState.DIALOGUE; // ZATRZYMUJEMY GRĘ
                         spaceWasProcessed = true;
 
-                        // Zresetuj ruch gracza, żeby nie "leciał" w tle
+                        // Losowanie zadania
+                        List<Word> words = wordBank.getRandomWords(1, 1);
+                        if (!words.isEmpty()) {
+                            currentWord = words.get(0);
+                            message = "";       // Czyść stare wiadomości
+                            typedAnswer = "";   // Czyść stary wpisany tekst
+                        } else {
+                            currentWord = null;
+                            message = "Brak zadań w bazie!";
+                        }
+
+                        // Reset ruchu (żeby postać nie szła w miejscu)
                         up = false; down = false; left = false; right = false;
                         break;
                     }
                 }
             }
         }
-        // 2. LOGIKA W TRAKCIE ZADANIA / DIALOGU
+        // --- STAN: DIALOG / ZADANIE ---
         else if (gameState == GameState.DIALOGUE) {
-            // Tutaj gracz się NIE rusza. Czeka na zamknięcie okna.
-            // Na razie symulujemy wyjście SPACJĄ
+            // Wyjście z zadania (SPACJA)
             if (spacePressed && !spaceWasProcessed) {
-                System.out.println("Koniec interakcji.");
-                gameState = GameState.WALKING; // Wracamy do gry
+                gameState = GameState.WALKING; // WRACAMY DO GRY
                 activeObject = null;
+                currentWord = null;
                 spaceWasProcessed = true;
             }
         }
     }
 
+    private void renderGame(GraphicsContext gc, Player player) {
+        // 1. Czyść ekran
+        gc.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+        // 2. Rysuj świat
+        tileMap.render(gc);
+        for (GameObject obj : currentObjects) {
+            obj.render(gc);
+        }
+        player.render(gc);
+
+        // 3. Rysuj nakładkę zadania (tylko w trybie DIALOGUE)
+        if (gameState == GameState.DIALOGUE) {
+            taskView.render(gc, WINDOW_WIDTH, WINDOW_HEIGHT, currentWord, message);
+        }
+
+        // Debug info (opcjonalne)
+        gc.setFill(Color.BLACK);
+        gc.setFont(Font.font(12));
+        gc.fillText("Mapa: " + getCurrentMapNumber() + " | Stan: " + gameState, 10, 20);
+    }
+
     private void handleMapSwitching(Player player) {
-        // (Ten kod jest taki sam jak wcześniej, tylko wywołuje refreshMapData)
         // W PRAWO
         if (player.getX() > WINDOW_WIDTH - 20) {
             if (currentMapX < 1) {
@@ -164,55 +241,38 @@ public class MainApp extends Application {
                 player.setPosition(0, player.getY());
             }
         }
-        // W DÓŁ i W GÓRĘ (skróciłem dla czytelności, wklej tu wersję z poprzedniego kroku jeśli potrzebujesz)
-        // ... (Logika Y bez zmian)
+        // W DÓŁ
+        if (player.getY() > WINDOW_HEIGHT - 20) {
+            if (currentMapY < 1) {
+                currentMapY++;
+                player.setPosition(player.getX(), 20);
+                refreshMapData(WINDOW_WIDTH/32, WINDOW_HEIGHT/32);
+            } else {
+                player.setPosition(player.getX(), WINDOW_HEIGHT - 40);
+            }
+        }
+        // W GÓRĘ
+        if (player.getY() < -10) {
+            if (currentMapY > 0) {
+                currentMapY--;
+                player.setPosition(player.getX(), WINDOW_HEIGHT - 50);
+                refreshMapData(WINDOW_WIDTH/32, WINDOW_HEIGHT/32);
+            } else {
+                player.setPosition(player.getX(), 0);
+            }
+        }
     }
 
     private void refreshMapData(int cols, int rows) {
         int mapNum = getCurrentMapNumber();
 
-        // 1. Ładujemy kafelki
+        // Ładujemy kafelki
         if (mapNum == 1) tileMap.loadMapData(MapDefinitions.getMap1(cols, rows));
         else if (mapNum == 2) tileMap.loadMapData(MapDefinitions.getMap2(cols, rows));
-        else tileMap.loadMapData(MapDefinitions.getMap1(cols, rows));
+        else tileMap.loadMapData(MapDefinitions.getMap1(cols, rows)); // Domyślna
 
-        // 2. Ładujemy obiekty (To jest nowe!)
+        // Ładujemy obiekty
         currentObjects = MapDefinitions.getObjects(mapNum);
-    }
-
-    private void renderGame(GraphicsContext gc, Player player) {
-        // Czyść ekran
-        gc.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-        // Rysuj mapę
-        tileMap.render(gc);
-
-        // Rysuj obiekty
-        for (GameObject obj : currentObjects) {
-            obj.render(gc);
-        }
-
-        // Rysuj gracza
-        player.render(gc);
-
-        // Rysuj HUD (interfejs)
-        if (gameState == GameState.DIALOGUE && activeObject != null) {
-            // Półprzezroczyste tło
-            gc.setFill(Color.rgb(0, 0, 0, 0.7));
-            gc.fillRect(100, 100, WINDOW_WIDTH - 200, WINDOW_HEIGHT - 200);
-
-            // Tekst zadania
-            gc.setFill(Color.WHITE);
-            gc.setFont(Font.font(30));
-            gc.fillText("Zadanie: " + activeObject.getName(), 150, 150);
-            gc.setFont(Font.font(20));
-            gc.fillText("Naciśnij SPACJĘ, aby zamknąć (Test)", 150, 200);
-        }
-
-        // Info debugowe
-        gc.setFill(Color.BLACK);
-        gc.setFont(Font.font(14));
-        gc.fillText("Mapa: " + getCurrentMapNumber() + " | Stan: " + gameState, 10, 20);
     }
 
     public static void main(String[] args) {
