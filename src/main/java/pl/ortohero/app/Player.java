@@ -66,7 +66,11 @@ public class Player {
 
     public double getHitboxX() { return x; }
     public double getHitboxY() { return y; }
-    public double getHitboxSize() { return 32 * 3; }
+    public double getHitboxSize() {
+        // Zmniejszamy hitbox do 28px.
+        // Kafelek ma 32px, więc gracz swobodnie przejdzie przez pojedynczą lukę.
+        return 28;
+    }
 
 }
 

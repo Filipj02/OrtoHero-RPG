@@ -8,42 +8,48 @@ public class TileMap {
     public static final int TILE_SIZE = 32;
     private final int cols;
     private final int rows;
-    //private final int mapNumber;
-    private final int[][] tiles; // 0 – trawa (przejście), 1 – blok (ściana)
+
+    // Tablica przechowująca ID kafelków
+    private int[][] tiles;
 
     public TileMap(int cols, int rows) {
         this.cols = cols;
         this.rows = rows;
         this.tiles = new int[rows][cols];
 
-        // 1) DOMYŚLNIE WSZĘDZIE TRAWNIK (0)
-        for (int y = 0; y < rows; y++) {
-            for (int x = 0; x < cols; x++) {
-                tiles[y][x] = 0;
-            }
-        }
-
-        // 2) TU DODAJESZ BLOKUJĄCE POLA (1)
-        // prostokąt 2x2 w środku mapy
-        tiles[5][5] = 1;
-        tiles[5][6] = 1;
-        tiles[6][5] = 1;
-        tiles[6][6] = 1;
+        // Domyślnie ładujemy pustą mapę lub pierwszą z definicji
+        // (Zostanie to nadpisane w MainApp, ale warto zainicjować)
+        loadMapData(MapDefinitions.getMap1(cols, rows));
     }
 
+    // Metoda do zmiany mapy "w locie"
+    public void loadMapData(int[][] newMapData) {
+        this.tiles = newMapData;
+    }
+
+    // Sprawdzanie kolizji
+    // px, py - pozycja gracza (hitboxa)
+    // size - rozmiar hitboxa
     public boolean isBlocked(double px, double py, double size) {
+        // Obliczamy, które kafelki zajmuje hitbox gracza (lewy-góra, prawy-dół)
         int leftTile   = (int) (px / TILE_SIZE);
         int rightTile  = (int) ((px + size - 1) / TILE_SIZE);
         int topTile    = (int) (py / TILE_SIZE);
         int bottomTile = (int) ((py + size - 1) / TILE_SIZE);
 
+        // Zabezpieczenie przed wyjściem indeksu poza tablicę
         if (leftTile < 0 || topTile < 0 || rightTile >= cols || bottomTile >= rows) {
-            return true; // poza mapą = blok
+            // Jeśli hitbox wystaje poza świat, traktujemy to jak blokadę (opcjonalne)
+            return true;
         }
 
+        // Sprawdzamy każdy kafelek, który dotyka hitbox gracza
         for (int ty = topTile; ty <= bottomTile; ty++) {
             for (int tx = leftTile; tx <= rightTile; tx++) {
-                if (tiles[ty][tx] == 1) {
+                int tileID = tiles[ty][tx];
+
+                // JEŚLI ID > 0, TO JEST PRZESZKODA
+                if (tileID > 0) {
                     return true;
                 }
             }
@@ -54,14 +60,22 @@ public class TileMap {
     public void render(GraphicsContext gc) {
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < cols; x++) {
-                if (tiles[y][x] == 0) {
-                    gc.setFill(Color.LIGHTGREEN); // trawa
-                } else {
-                    gc.setFill(Color.DARKOLIVEGREEN); // blok – inny zielony
+                int tileID = tiles[y][x];
+
+                // Ustawiamy kolor w zależności od ID
+                switch (tileID) {
+                    case 1 -> gc.setFill(Color.SADDLEBROWN); // Drzewo
+                    case 2 -> gc.setFill(Color.ROYALBLUE);   // Woda
+                    case 3 -> gc.setFill(Color.GRAY);        // Mur
+                    default -> gc.setFill(Color.LIGHTGREEN); // Trawa (0)
                 }
+
                 gc.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+
+                // Opcjonalnie: Siatka (grid) dla ułatwienia testów
+                // gc.setStroke(Color.BLACK);
+                // gc.strokeRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
             }
         }
     }
 }
-
