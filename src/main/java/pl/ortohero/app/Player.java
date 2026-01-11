@@ -2,75 +2,174 @@ package pl.ortohero.app;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Player {
 
-    private double x = 100;
-    private double y = 100;
-    private final double speed = 3;
+    private double x, y;
+    private int lives;
+    private int level;
+    private int wordsSolvedInCurrentLevel = 0;
+    private Map<String, Integer> inventory;
+    private double speed = 2.0;
 
-    private final Image up1, down1, left1, right1;
-    private String direction = "down";
+    // --- ZMIENNE DO ANIMACJI ---
+    private String direction = "down"; // Początkowy kierunek
+    private int spriteCounter = 0;
+    private int spriteNum = 1; // 1 = stoi, 2 = biegnie
 
-
-    public double getX() { return x; }
-    public double getY() { return y; }
-
-    public double getSize() {
-        return 32 * 3;
-    }
-
+    // --- GRAFIKI ---
+    private Image up1, up2, down1, down2, left1, left2, right1, right2;
 
     public Player() {
-        up1 = new Image(getClass().getResourceAsStream("/images/boy_up_1.png"));
-        down1 = new Image(getClass().getResourceAsStream("/images/boy_down_1.png"));
-        left1 = new Image(getClass().getResourceAsStream("/images/boy_left_1.png"));
-        right1 = new Image(getClass().getResourceAsStream("/images/boy_right_1.png"));
+        this.lives = 3;
+        this.level = 1;
+        this.inventory = new HashMap<>();
+        loadImages();
+    }
+
+    private void loadImages() {
+        try {
+            // Upewnij się, że nazwy plików są identyczne!
+            up1 = new Image(getClass().getResourceAsStream("/images/boy_up_1.png"));
+            up2 = new Image(getClass().getResourceAsStream("/images/boy_up_2.png"));
+            down1 = new Image(getClass().getResourceAsStream("/images/boy_down_1.png"));
+            down2 = new Image(getClass().getResourceAsStream("/images/boy_down_2.png"));
+            left1 = new Image(getClass().getResourceAsStream("/images/boy_left_1.png"));
+            left2 = new Image(getClass().getResourceAsStream("/images/boy_left_2.png"));
+            right1 = new Image(getClass().getResourceAsStream("/images/boy_right_1.png"));
+            right2 = new Image(getClass().getResourceAsStream("/images/boy_right_2.png"));
+        } catch (Exception e) {
+            System.err.println("Błąd ładowania grafik gracza: " + e.getMessage());
+        }
     }
 
     public void update(boolean up, boolean down, boolean left, boolean right) {
+        boolean isMoving = false;
+
         if (up) {
             y -= speed;
             direction = "up";
-        } else if (down) {
+            isMoving = true;
+        }
+        if (down) {
             y += speed;
             direction = "down";
-        } else if (left) {
+            isMoving = true;
+        }
+        if (left) {
             x -= speed;
             direction = "left";
-        } else if (right) {
+            isMoving = true;
+        }
+        if (right) {
             x += speed;
             direction = "right";
+            isMoving = true;
+        }
+
+        // --- LOGIKA ANIMACJI ---
+        if (isMoving) {
+            spriteCounter++;
+            // Zmiana klatki co 10 cykli pętli gry (reguluj liczbą 10, żeby zmienić prędkość animacji)
+            if (spriteCounter > 10) {
+                if (spriteNum == 1) {
+                    spriteNum = 2;
+                } else if (spriteNum == 2) {
+                    spriteNum = 1;
+                }
+                spriteCounter = 0;
+            }
+        } else {
+            // Jeśli stoi, zawsze pierwsza klatka
+            spriteCounter = 0;
+            spriteNum = 1;
         }
     }
 
     public void render(GraphicsContext gc) {
-        Image imageToDraw = switch (direction) {
-            case "up" -> up1;
-            case "left" -> left1;
-            case "right" -> right1;
-            default -> down1;
-        };
+        Image imageToDraw = null;
 
-        double scale = 3.0; // 3x większy
-        double width = imageToDraw.getWidth() * scale;
-        double height = imageToDraw.getHeight() * scale;
+        switch (direction) {
+            case "up":
+                if (spriteNum == 1) imageToDraw = up1; else imageToDraw = up2;
+                break;
+            case "down":
+                if (spriteNum == 1) imageToDraw = down1; else imageToDraw = down2;
+                break;
+            case "left":
+                if (spriteNum == 1) imageToDraw = left1; else imageToDraw = left2;
+                break;
+            case "right":
+                if (spriteNum == 1) imageToDraw = right1; else imageToDraw = right2;
+                break;
+        }
 
-        gc.drawImage(imageToDraw, x, y, width, height);
+        // Rysowanie (lub niebieski kwadrat jako fallback)
+        if (imageToDraw != null) {
+            // Rysujemy trochę większego (48x48) żeby ładniej wyglądał
+            gc.drawImage(imageToDraw, x , y , 32, 32);
+        } else {
+            gc.setFill(Color.BLUE);
+            gc.fillRect(x, y, 32, 32);
+        }
     }
 
-    public void setPosition(double x, double y) {
-        this.x = x;
-        this.y = y;
+    // --- Metoda resetująca animację (przydatna przy wejściu w dialog) ---
+    public void resetAnimationState() {
+        spriteNum = 1;
+        spriteCounter = 0;
     }
 
-    public double getHitboxX() { return x; }
-    public double getHitboxY() { return y; }
-    public double getHitboxSize() {
-        // Zmniejszamy hitbox do 28px.
-        // Kafelek ma 32px, więc gracz swobodnie przejdzie przez pojedynczą lukę.
-        return 28;
+    // --- RESZTA METOD (LEVELOWANIE, EKWIPUNEK ITD.) ---
+    public void addSuccess() {
+        wordsSolvedInCurrentLevel++;
+        int wordsNeeded = 5 + level;
+        if (wordsSolvedInCurrentLevel >= wordsNeeded) {
+            levelUp();
+        }
     }
 
+    private void levelUp() {
+        if (level >= 10) return;
+        level++;
+        wordsSolvedInCurrentLevel = 0;
+        if (lives < 3) lives++;
+        System.out.println("AWANS! Poziom: " + level);
+    }
+
+    public String getProgressString() {
+        if (level >= 10) return "MAX";
+        int wordsNeeded = 5 + level;
+        return wordsSolvedInCurrentLevel + "/" + wordsNeeded;
+    }
+
+    public void setPosition(double x, double y) { this.x = x; this.y = y; }
+    public double getX() { return x; }
+    public double getY() { return y; }
+    public double getHitboxX() { return x + 8; }
+    public double getHitboxY() { return y + 8; }
+    public double getHitboxSize() { return 16; }
+
+    public int getLives() { return lives; }
+    public void loseLife() { lives--; }
+    public void heal() { if(lives < 3) lives = 3; }
+
+    public void reset() {
+        this.lives = 3;
+        this.level = 1;
+        this.wordsSolvedInCurrentLevel = 0;
+        this.inventory.clear();
+        this.direction = "down";
+    }
+    public int getLevel() { return level; }
+
+    public void addItem(String item) { inventory.put(item, inventory.getOrDefault(item, 0) + 1); }
+    public boolean hasItem(String item) { return inventory.getOrDefault(item, 0) > 0; }
+    public void useItem(String item) {
+        if (hasItem(item)) inventory.put(item, inventory.get(item) - 1);
+    }
+    public Map<String, Integer> getInventory() { return inventory; }
 }
-

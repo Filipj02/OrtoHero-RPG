@@ -30,6 +30,8 @@ public class Word {
     }
     // ----------------------------
 
+
+
     // Gettery
     public String getFullWord() { return fullWord; }
     public String getTarget() { return target; }

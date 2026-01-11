@@ -1,32 +1,115 @@
 [
-  {
-    "fullWord": "góra",
-    "target": "ó",
-    "rule": "Wymienia się na 'gory' (ó -> o).",
-    "difficulty": 1
-  },
-  {
-    "fullWord": "stół",
-    "target": "ó",
-    "rule": "Wymienia się na 'stoły' (ó -> o).",
-    "difficulty": 1
-  },
-  {
-    "fullWord": "morze",
-    "target": "rz",
-    "rule": "Wymienia się na 'morski' (rz -> r).",
-    "difficulty": 1
-  },
-  {
-    "fullWord": "król",
-    "target": "ó",
-    "rule": "Wyjątek / 'ó' niewymienne.",
-    "difficulty": 2
-  },
-  {
-    "fullWord": "gżegżółka",
-    "target": "ż",
-    "rule": "Wyjątek po spółgłosce 'g'.",
-    "difficulty": 3
-  }
+  { "fullWord": "góra", "target": "ó", "rule": "Wymienia się na 'góry' (ó -> o).", "difficulty": 1 },
+  { "fullWord": "stół", "target": "ó", "rule": "Wymienia się na 'stoły' (ó -> o).", "difficulty": 1 },
+  { "fullWord": "morze", "target": "rz", "rule": "Wymienia się na 'morski' (rz -> r).", "difficulty": 1 },
+  { "fullWord": "król", "target": "ó", "rule": "Wyjątek / 'ó' niewymienne.", "difficulty": 2 },
+  { "fullWord": "gżegżółka", "target": "ż", "rule": "Wyjątek po spółgłosce 'g'.", "difficulty": 3 },
+
+  { "fullWord": "róża", "target": "ó", "rule": "Wymienia się na 'róże' (ó -> o).", "difficulty": 1 },
+  { "fullWord": "pióro", "target": "ó", "rule": "Wymienia się na 'piórka' (ó -> o).", "difficulty": 1 },
+  { "fullWord": "mówić", "target": "ó", "rule": "Wymienia się na 'mowa' (ó -> o).", "difficulty": 1 },
+  { "fullWord": "późno", "target": "ó", "rule": "Wyjątek, 'ó' niewymienne.", "difficulty": 2 },
+  { "fullWord": "chór", "target": "ó", "rule": "Wyjątek, 'ó' niewymienne.", "difficulty": 2 },
+
+  { "fullWord": "rów", "target": "ó", "rule": "Wymienia się na 'rowy' (ó -> o).", "difficulty": 1 },
+  { "fullWord": "wóz", "target": "ó", "rule": "Wymienia się na 'wozy' (ó -> o).", "difficulty": 1 },
+  { "fullWord": "wróbel", "target": "ó", "rule": "Wyjątek / 'ó' niewymienne.", "difficulty": 3 },
+  { "fullWord": "sól", "target": "ó", "rule": "Wyjątek / 'ó' niewymienne.", "difficulty": 2 },
+  { "fullWord": "jaskółka", "target": "ó", "rule": "Wyjątek / 'ó' niewymienne.", "difficulty": 2 },
+
+  { "fullWord": "skóra", "target": "ó", "rule": "Wymienia się na 'skóry' (ó -> o).", "difficulty": 1 },
+  { "fullWord": "góral", "target": "ó", "rule": "Od 'góra' (ó -> o).", "difficulty": 1 },
+  { "fullWord": "królik", "target": "ó", "rule": "Wyjątek / 'ó' niewymienne.", "difficulty": 2 },
+  { "fullWord": "królewna", "target": "ó", "rule": "Od 'król' ('ó' niewymienne).", "difficulty": 2 },
+  { "fullWord": "podwórko", "target": "ó", "rule": "Od 'dwór' (ó -> o).", "difficulty": 2 },
+
+  { "fullWord": "kura", "target": "u", "rule": "Głoska 'u' – bez wymiany, do odróżnienia od 'ó'.", "difficulty": 1 },
+  { "fullWord": "lupa", "target": "u", "rule": "'u' w rdzeniu wyrazu, kontrast do 'ó'.", "difficulty": 1 },
+  { "fullWord": "buty", "target": "u", "rule": "Stałe 'u' w wyrazie.", "difficulty": 1 },
+  { "fullWord": "kruk", "target": "u", "rule": "'u' w rdzeniu wyrazu, bez wymiany.", "difficulty": 1 },
+  { "fullWord": "budka", "target": "u", "rule": "'u' w rdzeniu, por. 'budy'.", "difficulty": 1 },
+
+  { "fullWord": "piórnik", "target": "ó", "rule": "Od 'pióro' (ó -> o).", "difficulty": 1 },
+  { "fullWord": "wózek", "target": "ó", "rule": "Od 'wóz' (ó -> o).", "difficulty": 1 },
+  { "fullWord": "krótszy", "target": "ó", "rule": "Od 'krótki' (ó -> o).", "difficulty": 2 },
+  { "fullWord": "mróz", "target": "ó", "rule": "Wymienia się na 'mrozy' (ó -> o).", "difficulty": 1 },
+  { "fullWord": "biurko", "target": "u", "rule": "'u' w rdzeniu wyrazu.", "difficulty": 1 },
+
+  { "fullWord": "morze", "target": "rz", "rule": "Wymienia się na 'morski' (rz -> r).", "difficulty": 1 },
+  { "fullWord": "rzeka", "target": "rz", "rule": "Rz niewymienne, typowy wyraz szkolny.", "difficulty": 1 },
+  { "fullWord": "rzecz", "target": "rz", "rule": "Rz niewymienne, wyraz podstawowy.", "difficulty": 1 },
+  { "fullWord": "brzoza", "target": "rz", "rule": "Po spółgłosce 'b' piszemy 'rz'.", "difficulty": 1 },
+  { "fullWord": "drzwi", "target": "rz", "rule": "Po spółgłosce 'd' piszemy 'rz'.", "difficulty": 1 },
+
+  { "fullWord": "trzeba", "target": "rz", "rule": "Po spółgłosce 't' piszemy 'rz'.", "difficulty": 1 },
+  { "fullWord": "brzeg", "target": "rz", "rule": "Wymienia się na 'brzeg–brzegi' (rz -> r).", "difficulty": 1 },
+  { "fullWord": "krzak", "target": "rz", "rule": "Po spółgłosce 'k' piszemy 'rz'.", "difficulty": 1 },
+  { "fullWord": "wrzos", "target": "rz", "rule": "Po spółgłosce 'w' piszemy 'rz'.", "difficulty": 1 },
+  { "fullWord": "przyroda", "target": "rz", "rule": "Po spółgłosce 'p' piszemy 'rz'.", "difficulty": 2 },
+
+  { "fullWord": "marzyć", "target": "rz", "rule": "Wymienia się na 'marzenie' (rz -> r).", "difficulty": 1 },
+  { "fullWord": "twarz", "target": "rz", "rule": "Rz niewymienne, wyraz częsty.", "difficulty": 2 },
+  { "fullWord": "tchórz", "target": "rz", "rule": "Rz niewymienne, wyraz szkolny.", "difficulty": 2 },
+  { "fullWord": "korzenie", "target": "rz", "rule": "Od 'korzeń' (rz -> r).", "difficulty": 1 },
+  { "fullWord": "wierzba", "target": "rz", "rule": "Rz po 'w', wyraz częsty w ćwiczeniach.", "difficulty": 2 },
+
+  { "fullWord": "żaba", "target": "ż", "rule": "Ż na początku wyrazu.", "difficulty": 1 },
+  { "fullWord": "żuk", "target": "ż", "rule": "Ż na początku wyrazu, łatwy przykład.", "difficulty": 1 },
+  { "fullWord": "żółw", "target": "ż", "rule": "Ż na początku wyrazu, 'ó' w środku.", "difficulty": 2 },
+  { "fullWord": "łożko", "target": "ż", "rule": "Właściwa forma 'łóżko' – trudność: ó i ż.", "difficulty": 3 },
+  { "fullWord": "każdy", "target": "ż", "rule": "Ż wymienia się na 'kazdy' (ż -> dz w etymologii).", "difficulty": 2 },
+
+  { "fullWord": "mróżka", "target": "ż", "rule": "Właściwa forma 'dróżka' (ó + ż) – mylenie z 'u' i 'rz'.", "difficulty": 3 },
+  { "fullWord": "rożek", "target": "ż", "rule": "Wymienia się na 'róg' (ż -> g).", "difficulty": 2 },
+  { "fullWord": "pieniążek", "target": "ż", "rule": "Wymienia się na 'pieniądz' (ż -> dz).", "difficulty": 2 },
+  { "fullWord": "duży", "target": "ż", "rule": "Wymienia się na 'duzi' (ż -> zi).", "difficulty": 1 },
+  { "fullWord": "drużyna", "target": "ż", "rule": "Wymienia się na 'druh' (ż -> h).", "difficulty": 2 },
+
+  { "fullWord": "papież", "target": "ż", "rule": "Wymienia się na 'papieski' (ż -> s).", "difficulty": 2 },
+  { "fullWord": "małżeństwo", "target": "ż", "rule": "Po 'ł' piszemy 'ż'.", "difficulty": 3 },
+  { "fullWord": "mróż", "target": "ż", "rule": "Właściwa forma 'mróz' – kontrast z ż/z.", "difficulty": 3 },
+  { "fullWord": "gżegżółka", "target": "ż", "rule": "Wyjątek, ż po spółgłosce g.", "difficulty": 3 },
+  { "fullWord": "żuraw", "target": "ż", "rule": "Ż na początku wyrazu.", "difficulty": 1 },
+
+  { "fullWord": "mucha", "target": "ch", "rule": "W innej formie: 'muszka' (ch -> sz).", "difficulty": 1 },
+  { "fullWord": "suchy", "target": "ch", "rule": "W innej formie: 'susza' (ch -> sz).", "difficulty": 1 },
+  { "fullWord": "orzech", "target": "ch", "rule": "W innej formie: 'orzeszek' (ch -> sz).", "difficulty": 2 },
+  { "fullWord": "ruch", "target": "ch", "rule": "W innej formie: 'ruszać' (ch -> sz).", "difficulty": 2 },
+  { "fullWord": "strach", "target": "ch", "rule": "Ch na końcu wyrazu.", "difficulty": 1 },
+
+
+  { "fullWord": "schody", "target": "ch", "rule": "Po 's' piszemy 'ch'.", "difficulty": 2 },
+  { "fullWord": "ucho", "target": "ch", "rule": "Ch w środku wyrazu, głoska /h/.", "difficulty": 1 },
+  { "fullWord": "chleb", "target": "ch", "rule": "Ch niewymienne w rdzeniu.", "difficulty": 1 },
+  { "fullWord": "tchórz", "target": "ch", "rule": "Ch + rz, wyraz trudny.", "difficulty": 3 },
+
+  { "fullWord": "chrząszcz", "target": "ch", "rule": "Zbitka 'chrzą', bardzo trudny wyraz.", "difficulty": 3 },
+  { "fullWord": "chmura", "target": "ch", "rule": "Ch na początku wyrazu.", "difficulty": 1 },
+  { "fullWord": "choroba", "target": "ch", "rule": "Ch na początku wyrazu.", "difficulty": 1 },
+  { "fullWord": "chustka", "target": "ch", "rule": "Ch w nagłosie, typowy wyraz szkolny.", "difficulty": 1 },
+  { "fullWord": "chrupki", "target": "ch", "rule": "Zbitka 'chr', trudniejsza wymowa.", "difficulty": 2 },
+
+  { "fullWord": "hak", "target": "h", "rule": "Pojedyncze 'h', kontrast do 'ch'.", "difficulty": 1 },
+  { "fullWord": "herbata", "target": "h", "rule": "H na początku wyrazu.", "difficulty": 1 },
+  { "fullWord": "hala", "target": "h", "rule": "H na początku wyrazu.", "difficulty": 1 },
+  { "fullWord": "hymn", "target": "h", "rule": "H na początku, trudna grupa spółgłoskowa.", "difficulty": 2 },
+  { "fullWord": "hulajnoga", "target": "h", "rule": "H na początku wyrazu.", "difficulty": 1 },
+
+  { "fullWord": "historyjka", "target": "h", "rule": "H na początku, dłuższy wyraz.", "difficulty": 2 },
+  { "fullWord": "hałas", "target": "h", "rule": "H na początku, wyraz dźwiękonaśladowczy.", "difficulty": 1 },
+  { "fullWord": "humor", "target": "h", "rule": "H w rdzeniu wyrazu.", "difficulty": 1 },
+  { "fullWord": "bohater", "target": "h", "rule": "H w środku wyrazu.", "difficulty": 2 },
+  { "fullWord": "wahać", "target": "h", "rule": "H w środku, wymienność z 'waha – wahał'.", "difficulty": 2 },
+
+  { "fullWord": "chata", "target": "ch", "rule": "Ch na początku, możliwe mylenie z 'h'.", "difficulty": 1 },
+  { "fullWord": "hałda", "target": "h", "rule": "H na początku, kontrast do 'ch'.", "difficulty": 2 },
+  { "fullWord": "mechanik", "target": "ch", "rule": "Ch w środku, wyraz szkolny.", "difficulty": 2 },
+  { "fullWord": "hydraulik", "target": "h", "rule": "H na początku złożenia 'hydro-'.", "difficulty": 3 },
+  { "fullWord": "schować", "target": "ch", "rule": "Po 's' piszemy 'ch'.", "difficulty": 2 },
+
+  { "fullWord": "żużel", "target": "ż", "rule": "Ż na początku, możliwe mylenie z 'rz'.", "difficulty": 2 },
+  { "fullWord": "rzeka", "target": "rz", "rule": "Typowy wyraz z 'rz' niewymiennym.", "difficulty": 1 },
+  { "fullWord": "chórzyk", "target": "ó", "rule": "Od 'chór' – ó niewymienne.", "difficulty": 3 },
+  { "fullWord": "burza", "target": "rz", "rule": "Wymienia się na 'burzowy' (rz -> r).", "difficulty": 1 }
+
 ]
