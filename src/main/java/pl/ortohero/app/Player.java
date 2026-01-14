@@ -21,7 +21,7 @@ public class Player {
     private int spriteNum = 1; // 1 = stoi, 2 = biegnie
 
     // --- GRAFIKI ---
-    private Image up1, up2, down1, down2, left1, left2, right1, right2;
+    private transient Image up1, up2, down1, down2, left1, left2, right1, right2;
 
     public Player() {
         this.lives = 3;
@@ -172,4 +172,8 @@ public class Player {
         if (hasItem(item)) inventory.put(item, inventory.get(item) - 1);
     }
     public Map<String, Integer> getInventory() { return inventory; }
+
+    public int getWordsSolvedInCurrentLevel() { return wordsSolvedInCurrentLevel; }
+    public void setWordsSolvedInCurrentLevel(int w) { this.wordsSolvedInCurrentLevel = w; }
+
 }

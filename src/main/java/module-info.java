@@ -2,6 +2,7 @@ module pl.ortohero.app.ortohero {
     requires javafx.controls;
     requires javafx.fxml;
     requires com.google.gson;
+    requires javafx.media;
 
 
     opens pl.ortohero.app to javafx.fxml, com.google.gson;

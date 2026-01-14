@@ -13,7 +13,7 @@ public class GameObject {
     private String type; // "enemy", "item", "obstacle"
     private String name;
     private boolean active = true;
-    private Image img;
+    private transient Image img;
 
     public GameObject(String name, String type, double x, double y) {
         this.name = name;
@@ -32,10 +32,19 @@ public class GameObject {
             setScale(2.0); // Troll jest duży (48x48)
         }
         else if (name.equals("Slime")) {
-            setScale(0.8); // Slime jest malutki (25x25)
+            setScale(1); // Slime jest malutki (25x25)
         }
+        else if (name.equals("Nieznany")){ setScale(2.5);}
+
+        else if (name.equals("Goblin")){ setScale(1.5);}
+
+        else if (name.equals("Beast")){ setScale(2.2);}
+
         else if (name.equals("Skrzynia")) setScale(1.2);
         else if (name.equals("Zamknięte Wrota")) setScale(1.1);
+
+
+
 
         loadGraphics();
     }
@@ -47,7 +56,7 @@ public class GameObject {
         this.height = 32 * s;
     }
 
-    private void loadGraphics() {
+    public void loadGraphics() {
         try {
             switch (name) {
                 // --- PRZESZKODY ---

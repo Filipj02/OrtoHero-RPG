@@ -31,40 +31,62 @@ public class TaskView {
         } catch (Exception e) {}
     }
 
-    public void render(GraphicsContext gc, double width, double height, Word currentWord, String message, Player player) {
-        // TŁO i RAMKA (Bez zmian)
-        double marginX = 200, marginY = 100;
-        double boxWidth = width - (2 * marginX);
-        double boxHeight = height - (2 * marginY);
+    public void render(GraphicsContext gc, double width, double height, Word currentWord, String message, Player player, boolean showRule) {
+        double marginX = 100;
+        double marginY = 100;
 
-        gc.setFill(BG_COLOR);
-        gc.fillRoundRect(marginX, marginY, boxWidth, boxHeight, 30, 30);
-        gc.setStroke(ACCENT_COLOR);
+        // Tło okna
+        gc.setFill(Color.rgb(40, 40, 40, 0.95));
+        gc.fillRoundRect(marginX, marginY, width - 2 * marginX, height - 2 * marginY, 30, 30);
+        gc.setStroke(Color.GOLD);
         gc.setLineWidth(3);
-        gc.strokeRoundRect(marginX, marginY, boxWidth, boxHeight, 30, 30);
+        gc.strokeRoundRect(marginX, marginY, width - 2 * marginX, height - 2 * marginY, 30, 30);
 
         if (currentWord == null) return;
 
-        // TEKSTY (Bez zmian)
-        gc.setFill(ACCENT_COLOR);
+        // TEKSTY
         gc.setTextAlign(TextAlignment.CENTER);
-        gc.setFont(Font.font("Verdana", FontWeight.BOLD, 28));
-        gc.fillText("ZADANIE ORTOGRAFICZNE", width / 2, marginY + 60);
 
+        // Nagłówek
+        gc.setFont(Font.font("OpenDyslexic", FontWeight.BOLD, 24)); // lub Arial jeśli nie wgrałeś czcionki
+        gc.setFill(Color.GOLD);
+        gc.fillText("ZADANIE ORTOGRAFICZNE", width / 2, marginY + 50);
+
+        // Słowo z maską
         gc.setFill(Color.WHITE);
-        gc.setFont(Font.font("Courier New", FontWeight.BOLD, 48));
+        gc.setFont(Font.font("OpenDyslexic", FontWeight.BOLD, 42));
         gc.fillText(currentWord.getMaskedWord(), width / 2, height / 2 - 20);
 
-        gc.setFont(Font.font("Arial", 20));
+        // KOMUNIKATY
+        gc.setFont(Font.font("OpenDyslexic", 18));
+
         if (message != null && !message.isEmpty()) {
-            if (message.startsWith("BRAWO")) gc.setFill(Color.LIGHTGREEN);
-            else if (message.startsWith("BŁĄD") || message.startsWith("GAME OVER")) gc.setFill(Color.SALMON);
-            else gc.setFill(Color.LIGHTGRAY);
+            if (message.startsWith("BRAWO") || message.startsWith("ZADANIE") || message.startsWith("BOSS") || message.startsWith("Dobrze")) {
+                gc.setFill(Color.LIGHTGREEN);
+            } else if (message.startsWith("BŁĄD") || message.startsWith("GAME")) {
+                gc.setFill(Color.SALMON);
+            } else {
+                gc.setFill(Color.LIGHTGRAY);
+            }
             gc.fillText(message, width / 2, height / 2 + 50);
-        } else {
-            gc.setFill(Color.LIGHTGRAY);
-            gc.fillText("Wpisz brakującą literę...", width / 2, height / 2 + 50);
         }
+
+        // --- WYŚWIETLANIE DEFINICJI (RULE) PRZY BŁĘDZIE ---
+        if (showRule) {
+            gc.setFill(Color.YELLOW);
+            gc.setFont(Font.font("OpenDyslexic", FontWeight.NORMAL, 16));
+
+            // Pobieramy zasadę z obiektu Word
+            String ruleText = "Zasada: " + currentWord.getRule();
+
+            // Wyświetlamy ją pod komunikatem błędu (przesunięcie o +80 w dół)
+            gc.fillText(ruleText, width / 2, height / 2 + 80);
+
+            gc.setFill(Color.LIGHTGRAY);
+            gc.setFont(Font.font(12));
+            gc.fillText("(Naciśnij SPACJĘ, aby wylosować nowe słowo)", width / 2, height / 2 + 100);
+        }
+        // --------------------------------------------------
 
         drawItemBar(gc, width, height, player);
     }
