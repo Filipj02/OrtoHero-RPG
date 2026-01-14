@@ -15,12 +15,12 @@ public class Player {
     private Map<String, Integer> inventory;
     private double speed = 2.0;
 
-    // --- ZMIENNE DO ANIMACJI ---
-    private String direction = "down"; // Początkowy kierunek
-    private int spriteCounter = 0;
-    private int spriteNum = 1; // 1 = stoi, 2 = biegnie
 
-    // --- GRAFIKI ---
+    private String direction = "down";
+    private int spriteCounter = 0;
+    private int spriteNum = 1;
+
+
     private transient Image up1, up2, down1, down2, left1, left2, right1, right2;
 
     public Player() {
@@ -32,7 +32,7 @@ public class Player {
 
     private void loadImages() {
         try {
-            // Upewnij się, że nazwy plików są identyczne!
+
             up1 = new Image(getClass().getResourceAsStream("/images/boy_up_1.png"));
             up2 = new Image(getClass().getResourceAsStream("/images/boy_up_2.png"));
             down1 = new Image(getClass().getResourceAsStream("/images/boy_down_1.png"));
@@ -73,7 +73,7 @@ public class Player {
         // --- LOGIKA ANIMACJI ---
         if (isMoving) {
             spriteCounter++;
-            // Zmiana klatki co 10 cykli pętli gry (reguluj liczbą 10, żeby zmienić prędkość animacji)
+
             if (spriteCounter > 10) {
                 if (spriteNum == 1) {
                     spriteNum = 2;
@@ -83,7 +83,7 @@ public class Player {
                 spriteCounter = 0;
             }
         } else {
-            // Jeśli stoi, zawsze pierwsza klatka
+
             spriteCounter = 0;
             spriteNum = 1;
         }
@@ -107,9 +107,9 @@ public class Player {
                 break;
         }
 
-        // Rysowanie (lub niebieski kwadrat jako fallback)
+
         if (imageToDraw != null) {
-            // Rysujemy trochę większego (48x48) żeby ładniej wyglądał
+
             gc.drawImage(imageToDraw, x , y , 32, 32);
         } else {
             gc.setFill(Color.BLUE);
@@ -117,13 +117,13 @@ public class Player {
         }
     }
 
-    // --- Metoda resetująca animację (przydatna przy wejściu w dialog) ---
+
     public void resetAnimationState() {
         spriteNum = 1;
         spriteCounter = 0;
     }
 
-    // --- RESZTA METOD (LEVELOWANIE, EKWIPUNEK ITD.) ---
+
     public void addSuccess() {
         wordsSolvedInCurrentLevel++;
         int wordsNeeded = 5 + level;

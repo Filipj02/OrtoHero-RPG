@@ -39,14 +39,7 @@ public class WordBank {
         }
     }
 
-    public List<Word> getRandomWords(int count, int difficultyLevel) {
-        if (allWords == null || allWords.isEmpty()) return new ArrayList<>();
-        List<Word> filtered = new ArrayList<>(allWords); // Uproszczone
-        Collections.shuffle(filtered);
-        return filtered.stream().limit(count).collect(Collectors.toList());
-    }
 
-    // --- TO JEST TA NOWA METODA, KTÓREJ BRAKOWAŁO ---
     public List<Word> getWordsByDifficulty(int count, List<Integer> allowedDifficulties) {
         if (allWords == null || allWords.isEmpty()) return new ArrayList<>();
 

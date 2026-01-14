@@ -65,7 +65,7 @@ public class SaveManager {
         }
     }
 
-    // Metoda pomocnicza do przywracania grafik po wczytaniu
+
     public static void restoreGraphics(Map<Integer, List<GameObject>> savedObjects) {
         if (savedObjects != null) {
             for (List<GameObject> list : savedObjects.values()) {

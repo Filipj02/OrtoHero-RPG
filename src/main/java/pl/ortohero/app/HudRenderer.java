@@ -60,7 +60,7 @@ public class HudRenderer {
         gc.fillText("[E] Ekwipunek", 120, 95);
     }
 
-    // --- TEJ METODY BRAKOWAŁO ---
+
     public void renderPauseOverlay(GraphicsContext gc, double width, double height) {
         gc.setFill(Color.rgb(0, 0, 0, 0.5));
         gc.fillRect(0, 0, width, height);

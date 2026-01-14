@@ -29,7 +29,7 @@ public class TileMap {
     private void loadGraphics() {
         try {
             // ODHACZ TE LINIE, GDY BĘDZIESZ MIAŁ PLIKI W /images/
-            grassImg = new Image(getClass().getResourceAsStream("/images/grass01.png"));
+            grassImg = new Image(getClass().getResourceAsStream("/images/grass.png"));
             treeImg = new Image(getClass().getResourceAsStream("/images/tree.png"));
             waterImg = new Image(getClass().getResourceAsStream("/images/water.png"));
             wallImg = new Image(getClass().getResourceAsStream("/images/wall.png"));
@@ -92,9 +92,9 @@ public class TileMap {
 
                         if (wallImg != null) {
                             // --- SKALOWANIE ŚCIANY ---
-                            double scale = 1.5; // Powiększamy o 15% (wystarczy, by zakryć szpary)
+                            double scale = 1;
 
-                            double scaledSize = TILE_SIZE * scale;       // Nowy rozmiar (np. 36.8 px)
+                            double scaledSize = TILE_SIZE * scale;
                             double offset = (scaledSize - TILE_SIZE) / 2; // O ile przesunąć, żeby było na środku
 
                             gc.drawImage(wallImg,

@@ -14,7 +14,7 @@ public class Word {
         this.difficulty = difficulty;
     }
 
-    // Metoda tworząca słowo z luką (np. "g_ra")
+
     public String getMaskedWord() {
         if (target != null && fullWord != null) {
             return fullWord.replaceFirst(target, "_");
@@ -22,13 +22,12 @@ public class Word {
         return "???";
     }
 
-    // --- TEJ METODY BRAKOWAŁO ---
-    // Sprawdza, czy podana przez gracza litera jest poprawna
+
     public boolean checkAnswer(String answer) {
         if (target == null || answer == null) return false;
         return target.equalsIgnoreCase(answer);
     }
-    // ----------------------------
+
 
 
 

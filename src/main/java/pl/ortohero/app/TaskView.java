@@ -71,7 +71,6 @@ public class TaskView {
             gc.fillText(message, width / 2, height / 2 + 50);
         }
 
-        // --- WYŚWIETLANIE DEFINICJI (RULE) PRZY BŁĘDZIE ---
         if (showRule) {
             gc.setFill(Color.YELLOW);
             gc.setFont(Font.font("OpenDyslexic", FontWeight.NORMAL, 16));
@@ -145,7 +144,7 @@ public class TaskView {
         gc.fillText("[ESC] Ucieczka", width / 2, height - 20);
     }
 
-    // Metoda handleClick pozostaje bez zmian (skopiuj ją z poprzedniej wersji jeśli zniknęła)
+
     public String handleClick(double mouseX, double mouseY, double width, double height, Player player) {
         double barY = height - 130;
         Map<String, Integer> inv = player.getInventory();

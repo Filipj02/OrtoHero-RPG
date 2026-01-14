@@ -98,10 +98,10 @@ public class InventoryView {
             }
 
             if (imgToDraw != null) {
-                // Rysujemy obrazek (trochę mniejszy niż slot, wyśrodkowany)
+
                 gc.drawImage(imgToDraw, slotX + 8, slotY + 8, 48, 48);
             } else {
-                // Fallback (kolorowy kwadrat jeśli brak obrazka)
+
                 switch (name) {
                     case "Mikstura" -> gc.setFill(Color.RED);
                     case "Miecz" -> gc.setFill(Color.SILVER);

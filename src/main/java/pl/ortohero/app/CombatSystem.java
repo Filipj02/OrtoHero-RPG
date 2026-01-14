@@ -14,10 +14,10 @@ public class CombatSystem {
     private boolean showingError = false;
     private GameObject activeObject;
 
-    // --- TO POLE BYŁO NULL ---
+
     private SoundManager soundManager;
 
-    // --- POPRAWIONY KONSTRUKTOR ---
+
     public CombatSystem(SoundManager soundManager) {
         this.wordBank = new WordBank();
         this.soundManager = soundManager; // <--- TEJ LINII BRAKOWAŁO LUB BYŁA BŁĘDNA!
@@ -28,7 +28,7 @@ public class CombatSystem {
         this.isTaskSolved = false;
         this.showingError = false;
 
-        // Ustalanie trudności
+
         if (obj.getName().equals("BOSS")) {
             this.remainingWordsToSolve = 15;
         } else {

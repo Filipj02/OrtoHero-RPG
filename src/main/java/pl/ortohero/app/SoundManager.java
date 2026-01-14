@@ -9,14 +9,14 @@ public class SoundManager {
 
     private MediaPlayer musicPlayer;
 
-    // Efekty dźwiękowe (AudioClip jest lepszy do krótkich dźwięków niż MediaPlayer)
+
     private AudioClip hitSound;
     private AudioClip gameOverSound;
     private AudioClip winSound;
 
     public void initSounds() {
         try {
-            // 1. Muzyka w tle
+
             String musicPath = getResourcePath("music.mp3");
             if (musicPath != null) {
                 Media sound = new Media(musicPath);
@@ -26,7 +26,7 @@ public class SoundManager {
                 musicPlayer.play();
             }
 
-            // 2. Efekty dźwiękowe (bezpieczne ładowanie)
+
             String hitPath = getResourcePath("hit.mp3");
             if (hitPath != null) hitSound = new AudioClip(hitPath);
 
@@ -41,7 +41,7 @@ public class SoundManager {
         }
     }
 
-    // Metoda pomocnicza - sprawdza czy plik istnieje ZANIM spróbuje go użyć
+
     private String getResourcePath(String filename) {
         var url = getClass().getResource("/sound/" + filename);
         if (url == null) {
@@ -51,7 +51,7 @@ public class SoundManager {
         return url.toExternalForm();
     }
 
-    // Metody odtwarzania
+
     public void playHit() {
         if (hitSound != null) hitSound.play();
     }
@@ -66,7 +66,7 @@ public class SoundManager {
         if (winSound != null) winSound.play();
     }
 
-    // Wznawianie muzyki po restarcie
+
     public void restartMusic() {
         if (musicPlayer != null) {
             musicPlayer.stop();
