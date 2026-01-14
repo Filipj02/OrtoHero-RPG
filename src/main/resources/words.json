@@ -115,7 +115,7 @@
   { "fullWord": "chleb", "target": "ch", "rule": "Ch na początku wyrazu, słowo podstawowe.", "difficulty": 1 },
   { "fullWord": "wujek", "target": "u", "rule": "U na początku sylaby.", "difficulty": 1 },
   { "fullWord": "zupa", "target": "u", "rule": "U w rdzeniu wyrazu.", "difficulty": 1 },
-  { "fullWord": "słoik", "target": "ó", "rule": "Wymienia się na 'słoje' (ó -> o).", "difficulty": 1 },
+
   { "fullWord": "ogórek", "target": "ó", "rule": "Niewymienne, ale bardzo popularne słowo.", "difficulty": 1 },
   { "fullWord": "grzyb", "target": "rz", "rule": "Piszemy rz po spółgłosce 'g'.", "difficulty": 1 },
   { "fullWord": "brzuch", "target": "rz", "rule": "Piszemy rz po spółgłosce 'b'.", "difficulty": 1 },

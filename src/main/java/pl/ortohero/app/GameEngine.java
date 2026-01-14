@@ -131,7 +131,7 @@ public class GameEngine {
 
         hudRenderer.render(gc, player);
 
-        // Ciemne tło dla menu rysujemy tutaj, ale przyciski rysuje JavaFX (menuBox)
+
         if (gameState == GameState.MENU) {
             hudRenderer.renderPauseOverlay(gc, MainApp.WINDOW_WIDTH, MainApp.WINDOW_HEIGHT);
         }
@@ -230,6 +230,10 @@ public class GameEngine {
         if (!player.hasItem(item)) return;
         if (item.equals("Mikstura") && player.getLives() < 3) { player.useItem(item); player.heal(); }
         else if (item.equals("Różdżka")) { player.useItem(item); combatSystem.loadNextWord(player.getLevel()); }
+        else if  (item.equals("Miecz")) { player.useItem(item); combatSystem.useSwordEffect(); }
+        else if (item.equals("Zbroja")) { player.useItem(item); player.equipArmor();
+
+        }
     }
 
     private void openMenu() {
@@ -273,7 +277,7 @@ public class GameEngine {
         gameState = GameState.WALKING;
     }
 
-    // Metody publiczne dla MainApp (np. do zapisu gry przez przycisk)
+
     public void saveAndExit() {
         SaveManager.saveGame(player, worldManager.getMapX(), worldManager.getMapY());
         Platform.exit();

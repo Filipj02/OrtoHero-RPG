@@ -68,8 +68,10 @@ public class CombatSystem {
         if (target.toLowerCase().startsWith(typedAnswer.toLowerCase())) {
             if (typedAnswer.equalsIgnoreCase(target)) {
                 // SUKCES
+
                 player.addSuccess();
-                remainingWordsToSolve--;
+
+                remainingWordsToSolve --;
 
                 if (remainingWordsToSolve > 0) {
                     loadNextWord(player.getLevel());
@@ -84,19 +86,28 @@ public class CombatSystem {
             }
         } else if (isOrthographicError(target, typedAnswer)) {
             // BŁĄD
-            player.loseLife();
-            if (player.getLives() <= 0) {
-                soundManager.playGameOver(); // Dźwięk przegranej
-                message = "GAME OVER! [SPACJA] restart.";
-                isTaskSolved = true;
-                return true;
-            } else {
-                soundManager.playHit(); // Dźwięk utraty życia
+            if (player.hasArmor()) {
+                // Masz zbroję -> NIE tracisz życia
+                soundManager.playHit();
+                message = "ZBROJA OCHRONIŁA CIĘ! " + currentWord.getRule();
                 showingError = true;
-                message = "BŁĄD ORTOGRAFICZNY! [SPACJA]";
+                player.breakArmor();
+
+            } else {
+                player.loseLife();
+                if (player.getLives() <= 0) {
+                    soundManager.playGameOver(); // Dźwięk przegranej
+                    message = "GAME OVER! [SPACJA] restart.";
+                    isTaskSolved = true;
+                    return true;
+                } else {
+                    soundManager.playHit(); // Dźwięk utraty życia
+                    showingError = true;
+                    message = "BŁĄD ORTOGRAFICZNY! [SPACJA]";
+                }
+                typedAnswer = "";
+                // ---------------------
             }
-            typedAnswer = "";
-            // ---------------------
         }
         else {
             typedAnswer = typedAnswer.substring(0, typedAnswer.length() - 1);
@@ -116,6 +127,22 @@ public class CombatSystem {
         if (target.startsWith("ó") && lastChar.equals("u")) return true;
         return false;
     }
+    public void useSwordEffect() {
+        if (remainingWordsToSolve > 0) {
+            remainingWordsToSolve--; // Kasujemy jedno słowo!
+            message = "Użyto miecza! Zostało słów: " + remainingWordsToSolve;
+
+            // Sprawdzamy czy to nie był koniec walki
+            if (remainingWordsToSolve <= 0) {
+                isTaskSolved = true;
+                message = "POKONANY MIECZEM! [SPACJA]";
+                if (activeObject != null && activeObject.getName().equals("BOSS")) {
+                    soundManager.playWin();
+                }
+            }
+        }
+    }
+
 
     // Gettery i Settery dla MainApp
     public Word getCurrentWord() { return currentWord; }

@@ -22,7 +22,7 @@ public class InventoryView {
             // Możesz zakomentować te linie, jeśli jeszcze nie masz plików
             potionImg = new Image(getClass().getResourceAsStream("/images/potion.png"));
             swordImg = new Image(getClass().getResourceAsStream("/images/sword.png"));
-             armorImg = new Image(getClass().getResourceAsStream("/images/chain.png"));
+            armorImg = new Image(getClass().getResourceAsStream("/images/chain.png"));
             wandImg = new Image(getClass().getResourceAsStream("/images/staff.png"));
             // featherImg = new Image(getClass().getResourceAsStream("/images/feather.png"));
         } catch (Exception e) {
@@ -107,7 +107,7 @@ public class InventoryView {
                     case "Miecz" -> gc.setFill(Color.SILVER);
                     case "Zbroja" -> gc.setFill(Color.GRAY);
                     case "Różdżka" -> gc.setFill(Color.MAGENTA);
-                    case "Pióro" -> gc.setFill(Color.WHITE);
+
                     default -> gc.setFill(Color.YELLOW);
                 }
                 gc.fillRect(slotX + 10, slotY + 10, slotSize - 20, slotSize - 20);

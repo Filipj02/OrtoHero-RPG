@@ -146,6 +146,24 @@ public class Player {
         return wordsSolvedInCurrentLevel + "/" + wordsNeeded;
     }
 
+    private boolean armorEquipped = false; // Czy zbroja założona?
+
+
+    public void equipArmor() {
+        this.armorEquipped = true; // Włączamy ochronę
+        // Ustawiamy życie na 4 (ponad limit)
+        System.out.println("Zbroja założona! Życie");
+    }
+
+
+    public boolean hasArmor() {
+        return armorEquipped;
+    }
+    public void breakArmor() {
+        this.armorEquipped = false; // Wyłącza ochronę
+        System.out.println("Zbroja pękła!");
+    }
+
     public void setPosition(double x, double y) { this.x = x; this.y = y; }
     public double getX() { return x; }
     public double getY() { return y; }
@@ -170,6 +188,9 @@ public class Player {
     public boolean hasItem(String item) { return inventory.getOrDefault(item, 0) > 0; }
     public void useItem(String item) {
         if (hasItem(item)) inventory.put(item, inventory.get(item) - 1);
+        if (inventory.get(item) <= 0) {
+            inventory.remove(item);
+        }
     }
     public Map<String, Integer> getInventory() { return inventory; }
 
