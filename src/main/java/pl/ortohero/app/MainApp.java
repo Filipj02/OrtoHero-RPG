@@ -62,7 +62,7 @@ public class MainApp extends Application {
             }
         }.start();
 
-        stage.setTitle("OrtoHero RPG - Final Clean Architecture");
+        stage.setTitle("OrtoHero RPG");
         stage.setScene(scene);
         stage.show();
         root.requestFocus();

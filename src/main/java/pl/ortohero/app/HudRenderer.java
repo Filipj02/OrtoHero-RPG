@@ -54,6 +54,8 @@ public class HudRenderer {
             }
         }
 
+
+
         // Info o ekwipunku
         gc.setFill(Color.LIGHTGRAY);
         gc.setFont(Font.font(10));

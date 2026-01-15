@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="JavadocGenerationManager">
-    <option name="OUTPUT_DIRECTORY" value="$USER_HOME$/Desktop/dokumentacja" />
+    <option name="OUTPUT_DIRECTORY" value="$USER_HOME$/Desktop/s195978_OrtoHero/doc" />
     <option name="OPTION_SCOPE" value="private" />
   </component>
   <component name="MavenProjectsManager">

@@ -15,7 +15,7 @@ public class GameEngine {
     // --- STANY ---
     public enum GameState { WALKING, DIALOGUE, INVENTORY, WIN, MENU }
     private GameState gameState = GameState.WALKING;
-
+    private boolean showBossWarning = false;
     // --- MODUŁY ---
     private WorldManager worldManager;
     private CombatSystem combatSystem;
@@ -135,6 +135,10 @@ public class GameEngine {
         if (gameState == GameState.MENU) {
             hudRenderer.renderPauseOverlay(gc, MainApp.WINDOW_WIDTH, MainApp.WINDOW_HEIGHT);
         }
+//        if (showLevelWarning) {
+//
+//        }
+
     }
 
     // --- OBSŁUGA WEJŚCIA (PRZEKAZYWANA Z MAIN) ---
@@ -192,9 +196,14 @@ public class GameEngine {
     }
 
     // --- METODY POMOCNICZE (LOGIKA) ---
-
+    private boolean showLevelWarning = false;
     private void interact(GameObject obj) {
-        if (obj.getName().equals("BOSS") && player.getLevel() < 10) return; // Blokada lvl
+        if (obj.getName().equals("BOSS") && player.getLevel() < 10){
+            combatSystem.setMessage("Wymagany 10 level! ");
+            gameState = GameState.DIALOGUE;
+            player.resetAnimationState();
+            return; // Blokada lvl
+        }
         combatSystem.startCombat(obj, player.getLevel());
         gameState = GameState.DIALOGUE;
         player.resetAnimationState();
@@ -256,7 +265,7 @@ public class GameEngine {
             SaveManager.restoreGraphics(data.savedObjects);
         }
         player.reset();
-        for (int i = 1; i < data.level; i++) player.addSuccess();
+        player.setLevel(data.level);
         player.setWordsSolvedInCurrentLevel(data.wordsSolved);
         while (player.getLives() > data.lives) player.loseLife();
         player.setPosition(data.playerX, data.playerY);

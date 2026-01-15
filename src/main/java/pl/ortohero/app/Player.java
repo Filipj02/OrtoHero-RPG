@@ -13,7 +13,7 @@ public class Player {
     private int level;
     private int wordsSolvedInCurrentLevel = 0;
     private Map<String, Integer> inventory;
-    private double speed = 2.0;
+    private double speed = 4.0;
 
 
     private String direction = "down";
@@ -183,7 +183,9 @@ public class Player {
         this.direction = "down";
     }
     public int getLevel() { return level; }
-
+    public void setLevel(int level) {
+        this.level = level;
+    }
     public void addItem(String item) { inventory.put(item, inventory.getOrDefault(item, 0) + 1); }
     public boolean hasItem(String item) { return inventory.getOrDefault(item, 0) > 0; }
     public void useItem(String item) {

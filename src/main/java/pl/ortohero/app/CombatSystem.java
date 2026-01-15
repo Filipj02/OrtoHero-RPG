@@ -147,6 +147,10 @@ public class CombatSystem {
     // Gettery i Settery dla MainApp
     public Word getCurrentWord() { return currentWord; }
     public String getMessage() { return message; }
+    public String setMessage(String message) {
+        this.message = message;
+        return message;
+    }
     public boolean isTaskSolved() { return isTaskSolved; }
     public boolean isShowingError() { return showingError; }
     public void setShowingError(boolean b) { this.showingError = b; }
